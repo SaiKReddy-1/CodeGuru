@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  NewRelicLogIngestionFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  LambdaInvokePermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref NewRelicLogIngestionFunction
+      SourceArn: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/test'
+      Principal: !Sub 'logs.${AWS::Region}.amazonaws.com'
+  NewRelicLogIngestionFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        S3Bucket: awsserverlessrepo-changesets-plntc6bfnfj
+        S3Key: 025804163107-ae28a11d-58ff-4164-948f-8aec279934a8
+      FunctionName: newrelic-log-ingestion
+      Tags:
+        - Value: SAM
+          Key: 'lambda:createdBy'
+      Environment:
+        Variables:
+          LICENSE_KEY: !Ref NRLicenseKey
+      Handler: function.lambda_handler
+      Role: !GetAtt 
+        - NewRelicLogIngestionFunctionRole
+        - Arn
+      Timeout: 30
+      Runtime: python3.6
+Description: >-
+  Sends log data from CloudWatch Logs and S3 to New Relic Infrastructure (Cloud
+  integrations) and New Relic Logging.
+Parameters:
+  NRLicenseKey:
+    Default: YOUR_LICENSE_KEY
+    Type: String
+    Description: Your NewRelic license key. You may omit it when deploying the function.
