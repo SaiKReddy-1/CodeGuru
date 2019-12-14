@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+METHOD:PUBLISH
+PRODID:-//Microsoft Corporation//Outlook 11.0 MIMEDIR//EN
+BEGIN:VEVENT
+UID:38535ddecb7cefaa6
+DTSTAMP:20191127T191612Z
+DTSTART:20191203T160000Z
+DTEND:20191203T190000Z
+SUMMARY:Andy Jassy Keynote
+LOCATION:re:Invent 2019
+DESCRIPTION:Access the keynote livestream at https://live.awsevents.com/reinvent\n\nAndy Jassy\, CEO of AWS\, takes the stage Tuesday morning to share his insight and the latest news about AWS customers\, products\, and services.
+END:VEVENT
+END:VCALENDAR
